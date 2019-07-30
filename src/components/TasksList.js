@@ -1,7 +1,7 @@
 import React from 'react';
 import renderChildrenHOC from "../hoc/renderChild";
 import Tasks from "./Tasks";
-import {getActiveCategory} from '../helpers/helpers';
+import {getActiveCategory} from '../helpers/methods';
 import _ from 'lodash';
 
 /**

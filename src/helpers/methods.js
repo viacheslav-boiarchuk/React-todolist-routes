@@ -26,8 +26,8 @@ export function addDataToCategory(categoryData, id, arr) {
     }
 
     for (let i = 0; i < arr.length; i++) {
-        if (arr[i].categories.length > 0) {
-            addDataToCategory(categoryData, id, arr[i].categories);
+        if (arr[i].categoryList.length > 0) {
+            addDataToCategory(categoryData, id, arr[i].categoryList);
         }
         if (arr[i].uniqueId === id) {
             switch (categoryData.type) {
@@ -40,7 +40,10 @@ export function addDataToCategory(categoryData, id, arr) {
                 case ('addCategory'):
                     let modifiedCategoryData = getCorrectKey(arr[i], categoryData);
                     arr[i].activeCategory = false;
-                    arr[i].categories.push(modifiedCategoryData);
+                    arr[i].categoryList.push(modifiedCategoryData);
+                    break;
+                case ('removeCategory'):
+                    arr.splice(i, 1);
                     break;
                 default:
                     break;
@@ -50,7 +53,6 @@ export function addDataToCategory(categoryData, id, arr) {
             arr[i].activeCategory = false;
         }
     }
-
     return arr;
 }
 
@@ -71,8 +73,8 @@ export function getActiveCategory(data, tempObj, cb) {
         if (copiedData[i].activeCategory) {
             cb(copiedData[i]);
         }
-        if (copiedData[i].categories.length > 0) {
-            getActiveCategory(copiedData[i].categories, tempObj, cb);
+        if (copiedData[i].categoryList.length > 0) {
+            getActiveCategory(copiedData[i].categoryList, tempObj, cb);
         }
     }
 }
@@ -89,7 +91,7 @@ export function getCorrectKey(parentItem, data) {
     let copiedData = Object.assign({}, data);
 
     if (parentItem.uniqKey) {
-        let lastIdFromSiblingCategory = parentItem.categories[parentItem.categories.length-1] ? parentItem.categories[parentItem.categories.length-1].uniqKey : '';
+        let lastIdFromSiblingCategory = parentItem.categoryList[parentItem.categoryList.length-1] ? parentItem.categoryList[parentItem.categoryList.length-1].uniqKey : '';
         if (typeof lastIdFromSiblingCategory === 'string' && lastIdFromSiblingCategory !== '') {
             let resultValue = lastIdFromSiblingCategory.split(','),
                 valueAfterComma = parseInt(resultValue[resultValue.length-1], 10) + 1,
@@ -109,4 +111,52 @@ export function getCorrectKey(parentItem, data) {
         copiedData.uniqKey = parentItem[parentItem.length-1] ? parentItem[parentItem.length-1].uniqKey + 1 : 1;
     }
     return copiedData;
+}
+
+/**
+ * function which add new category
+ *
+ * @param {String} payload - category id
+ * @param {Array} storeCategory - categories list from Store
+ */
+export function addCategory(payload, storeCategory) {
+    let categoryName = prompt('Please add category', "React");
+    if (categoryName != null) {
+        let categoryData = {
+                type: 'addCategory',
+                id: 0,
+                name: categoryName,
+                categoryTasksList: [],
+                uniqueId: categoryName+createUniqueId(),
+                categoryList: [],
+                activeCategory: true
+        };
+        return addDataToCategory(categoryData, payload, storeCategory);
+    }
+}
+
+/**
+ * function which add new task in proper category
+ *
+ * @param {String} payload - category id
+ * @param {Array} storeCategory - categories list from Store
+ */
+
+export function addTask(payload, storeCategory) {
+    let activeLi = document.querySelector('.active-li');
+    if (!activeLi) {
+        alert('Please choose category');
+        return storeCategory;
+    }
+    else {
+        let currentCategoryId = activeLi.closest('.category-item').getAttribute('data-unique-key'),
+            taskName = prompt('Please add task', "Need to wake up on 9 o'clock");
+        if (taskName != null) {
+            let categoryData = {
+                    type: 'addTask',
+                    taskName
+            };
+            return addDataToCategory(categoryData, currentCategoryId, storeCategory);
+        }
+    }
 }

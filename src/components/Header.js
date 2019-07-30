@@ -7,7 +7,7 @@ import React from 'react';
  */
 
 export default function TodoHeader(props) {
-    let text = props.visibleSidebar === 'true' ? 'Hide' : 'Show';
+    let text = props.isOpened ? 'Hide' : 'Show';
     return (
         <header>
             <button onClick={props.toggleSidebar}>{text} Sidebar</button>

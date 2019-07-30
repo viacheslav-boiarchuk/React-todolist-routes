@@ -53,8 +53,9 @@ aside.hidden {
     width: 100%;
 }
 
-.add-subcategories {
-    padding: 5px;
+.add-subcategories,
+.remove-category {
+    padding: 8px;
     margin: 0 0 0 10px;
 }
 
@@ -93,4 +94,35 @@ aside,
 .active-li,
 .active-li * {
     color: green;
+}
+
+body {
+    background: lightblue;
+}
+
+button {
+    border: 1px solid #000;
+    background: lightyellow;
+    color: #000;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+button:hover,
+button:focus {
+    outline: none;
+}
+
+footer {
+    padding: 20px 0;
+    border-bottom: 2px solid #000;
+}
+
+body main {
+    display: flex;
+}
+
+.calendar-container {
+    display: flex;
+    justify-content: space-between;
 }

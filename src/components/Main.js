@@ -6,7 +6,7 @@ import React from 'react';
  * @param {Object} props
  */
 
-export default function TodoMain(props) {
+export default function Main(props) {
     return (
         <main>
             {props.children}

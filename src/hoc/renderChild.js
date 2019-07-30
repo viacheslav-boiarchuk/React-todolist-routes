@@ -1,7 +1,7 @@
 import React from 'react';
 
 /**
- * HOC which update data for categories and tasks components and render them
+ * HOC which update data for categoryList and tasks components and render them
  *
  * @param {Object} Component
  * @param {String} componentClassName
@@ -12,14 +12,14 @@ import React from 'react';
 export default function renderChildrenHOC(Component, componentClassName) {
     return class Wrapper extends React.Component {
         render() {
-            let {item, tempProps} = this.props;
-            if (item.categories.length > 0) {
-                let updatedProps = Object.assign({}, tempProps.categoryData);
-                updatedProps.categories = item.categories;
+            let {item, defaultProps} = this.props;
+            if (item.categoryList.length > 0) {
+                let updatedProps = Object.assign({}, defaultProps);
+                updatedProps.categoryList = item.categoryList;
 
                 return (
                     <div className={componentClassName}>
-                        <Component categoryData={updatedProps} />
+                        <Component {...updatedProps} />
                     </div>
                 )
             }

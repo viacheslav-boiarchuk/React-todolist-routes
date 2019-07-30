@@ -10,10 +10,10 @@ import TasksList from './TasksList';
 export default function TasksContainer(props) {
     return (
         <div className="todolist-container">
-            <button onClick={props.addTask}>Add Task</button>
+            <button onClick={props.toggleNewTaskModal}>Add Task</button>
 
             <div className="todolist-inner-container">
-                <TasksList categoryData={props} />
+                {/*<TasksList categoryData={props} />*/}
             </div>
         </div>
     )
