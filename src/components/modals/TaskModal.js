@@ -2,6 +2,7 @@ import {Button, Modal, Form} from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import React, {useState} from 'react';
+import {createUniqueId} from "../../helpers/methods";
 
 function TaskModal(props) {
 
@@ -25,7 +26,8 @@ function TaskModal(props) {
                 dod,
                 description,
                 startDate,
-                endDate
+                endDate,
+                taskUniqueID: name + createUniqueId()
             });
             props.toggleNewTaskModal();
         }

@@ -8,10 +8,10 @@ import {checkTaskDuration} from '../helpers/methods';
  */
 
 export default function Task(props) {
-    let {task, taskIndex} = props,
+    let {task, taskIndex, toggleDateModal} = props,
         keyName = task.name + taskIndex,
         startDate = new Date(task.startDate).toDateString(),
-        endDate = new Date(task.startDate).toDateString(),
+        endDate = new Date(task.endDate).toDateString(),
         dateExpired = checkTaskDuration(endDate),
         dateExpiredClass = !dateExpired ? 'expired' : '';
 
@@ -24,6 +24,9 @@ export default function Task(props) {
                 {task.description}
             </blockquote>
             <p>PERIOD: <span className={dateExpiredClass}><strong>{startDate}</strong> - <strong>{endDate}</strong></span></p>
+            {!dateExpired ?
+                <button onClick={e => toggleDateModal(task.taskUniqueID)}>Reactivate Data</button>
+            : null}
         </li>
     )
 };

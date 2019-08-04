@@ -1,5 +1,10 @@
 import * as ct from '../actions/constants';
-import {addCategory, addDataToCategory, checkActiveCategory} from '../helpers/methods';
+import {
+    addCategory,
+    addDataToCategory,
+    checkActiveCategory,
+    updateTaskDate
+} from '../helpers/methods';
 
 const initialState = {
     categoryList: [],
@@ -48,8 +53,17 @@ export const categories = (state = initialState, action) => {
         case ct.TOGGLE_REMOVE_MODAL:
             let removeIdExist = state.removeCategoryID ? '': payload;
 
-            return { ...state,
+            return {
+                ...state,
                 removeCategoryID: removeIdExist
+            };
+
+        case ct.CHANGE_TASK_DATE:
+            let updatedDataWithNewTaskDate = updateTaskDate(payload, [...state.categoryList]);
+            console.log(updatedDataWithNewTaskDate);
+
+            return {
+                ...state
             };
 
         default:

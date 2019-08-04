@@ -104,7 +104,7 @@ export function addCategory(payload, storeCategory) {
                 id: 0,
                 name: categoryName,
                 categoryTasksList: [],
-                uniqueId: categoryName+createUniqueId(),
+                uniqueId: categoryName + createUniqueId(),
                 categoryList: [],
                 activeCategory: true
         };
@@ -149,4 +149,28 @@ export function checkTaskDuration(endDate) {
     var d1 = new Date();
     var d2 = new Date(endDate);
     return d1 < d2;
+}
+
+/**
+ * update Date in corresponding Task
+ *
+ * @param {Object} categoryData - task end day
+ * @param {Object}  arr - array with all categories, except new ones which we are adding
+ * @returns {Object} return updated list
+ */
+
+export function updateTaskDate(categoryData, arr) {
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i].categoryList.length > 0) {
+            updateTaskDate(categoryData, arr[i]);
+        }
+        for (let j = 0; j < arr[i].categoryTasksList.length; j++) {
+            let currItem = arr[i].categoryTasksList[j];
+            if (currItem.taskUniqueID === categoryData.activeTaskID) {
+                currItem.startDate = categoryData.startDate;
+                currItem.endDate = categoryData.endDate;
+            }
+        }
+    }
+    return arr;
 }

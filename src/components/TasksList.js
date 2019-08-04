@@ -8,7 +8,8 @@ import _ from 'lodash';
 
 export default function TasksList(props) {
 
-    let {categoryTasksList} = props.categoryData;
+    let {categoryTasksList} = props.categoryData,
+        {toggleDateModal} = props;
 
     return (
         <>
@@ -16,7 +17,11 @@ export default function TasksList(props) {
                 <ul>
                     {categoryTasksList.map((item, index) => {
                         return (
-                            <Task task={item} key={index+'__'+item.name} />
+                            <Task
+                                toggleDateModal={toggleDateModal}
+                                task={item}
+                                key={index+'__'+item.name}
+                            />
                         )
                     })}
                 </ul>

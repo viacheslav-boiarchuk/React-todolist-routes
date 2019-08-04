@@ -3,7 +3,8 @@ import {
     TOGGLE_REMOVE_MODAL,
     REMOVE_CATEGORY,
     TOGGLE_ERROR_MODAL,
-    TOGGLE_ADD_TASK_MODAL
+    TOGGLE_ADD_TASK_MODAL,
+    TOGGLE_DATE_MODAL,
 } from '../actions/constants';
 
 const initialState = {
@@ -11,10 +12,12 @@ const initialState = {
     openedRemoveModal: false,
     openedTaskModal: false,
     openedErrorModal: false,
+    openedDateModal: false,
+    activeTaskID: ''
 };
 
 export const common = (state = initialState, action) => {
-    const { type } = action;
+    const { type, payload } = action;
 
     switch (type) {
         case SIDEBAR_TOGGLE:
@@ -42,6 +45,14 @@ export const common = (state = initialState, action) => {
             return {
                 ...state,
                 openedTaskModal: !state.openedTaskModal
+            };
+
+        case TOGGLE_DATE_MODAL:
+            let activeTaskState = state.activeTaskID ? '': payload;
+            return {
+                ...state,
+                openedDateModal: !state.openedDateModal,
+                activeTaskID: activeTaskState
             };
 
         default:

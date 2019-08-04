@@ -7,6 +7,8 @@ import {
     toggleRemoveModal,
     removeCategory,
     toggleErrorModal,
+    toggleDateModal,
+    changeTaskDate,
     addTask
 } from './actions';
 
@@ -29,7 +31,8 @@ export const tasksConnector = connect(state => ({
     state: state
 }), {
     toggleNewTaskModal: (payload) => toggleNewTaskModal(payload),
-    toggleErrorModal: (payload) => toggleErrorModal(payload)
+    toggleErrorModal: (payload) => toggleErrorModal(payload),
+    toggleDateModal: (payload) => toggleDateModal(payload),
 });
 
 export const removeModalConnector = connect(state => ({
@@ -37,6 +40,14 @@ export const removeModalConnector = connect(state => ({
 }), {
     removeCategory: (payload) => removeCategory(payload),
     toggleRemoveModal: (payload) => toggleRemoveModal(payload),
+});
+
+export const dateModalConnector = connect(state => ({
+    openedDateModal: state.common.openedDateModal,
+    activeTaskID: state.common.activeTaskID
+}), {
+    toggleDateModal: (payload) => toggleDateModal(payload),
+    changeTaskDate: (payload) => changeTaskDate(payload),
 });
 
 export const taskModalConnector = connect(state => ({

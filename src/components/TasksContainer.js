@@ -12,6 +12,7 @@ import {checkActiveCategory} from '../helpers/methods';
 export default function TasksContainer(props) {
 
     let {categoryList} = props.state.categories,
+        {toggleDateModal} = props,
         activeCategoryData  = checkActiveCategory([...categoryList], true);
 
     const callCategoryHelper = () => {
@@ -31,7 +32,8 @@ export default function TasksContainer(props) {
             <button onClick={callCategoryHelper}>Add Task</button>
 
             <div className="todolist-inner-container">
-                <TasksList categoryData={activeCategoryData} />
+                <TasksList categoryData={activeCategoryData}
+                           toggleDateModal={toggleDateModal} />
             </div>
         </div>
     )
