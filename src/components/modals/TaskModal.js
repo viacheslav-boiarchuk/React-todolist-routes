@@ -4,6 +4,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import React, {useState} from 'react';
 
 function TaskModal(props) {
+
+    let {addTask, openedTaskModal, toggleNewTaskModal} = props;
     const [validated, setValidated] = useState(false),
         [name, setName] = useState(false),
         [id, setId] = useState(false),
@@ -13,19 +15,21 @@ function TaskModal(props) {
         [endDate, setEndDate] = useState(false);
 
     const handleSubmit = event => {
+        const form = event.currentTarget;
         event.preventDefault();
         event.stopPropagation();
-
-        const form = event.currentTarget;
-        if (form.checkValidity()) {
-            console.log(name);
-            console.log(id);
-            console.log(dod);
-            console.log(description);
-            console.log(startDate);
-            console.log(endDate);
-            setValidated(true);
+        if (form.checkValidity() !== false) {
+            addTask({
+                name,
+                id,
+                dod,
+                description,
+                startDate,
+                endDate
+            });
+            props.toggleNewTaskModal();
         }
+        setValidated(true);
     };
 
     const handleChangeStart = value => {
@@ -53,76 +57,81 @@ function TaskModal(props) {
     };
 
     return (
-        <>
-            <Modal show={props.openedTaskModalModal}>
-                <Modal.Body>
-                    <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                        <Form.Group controlId="taskForm.TaskName">
-                            <Form.Control type="text" placeholder="Name" onChange={handleName} required />
-                            <Form.Control.Feedback type="invalid">
-                                Please provide Task Name.
-                            </Form.Control.Feedback>
+        <Modal show={openedTaskModal} className={"add-new-task-modal"}>
+            <Modal.Body>
+                <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                    <Form.Group controlId="taskForm.TaskName">
+                        <Form.Control type="text" placeholder="Name" onChange={handleName} required />
+                        <Form.Control.Feedback type="invalid">
+                            Please provide Task Name.
+                        </Form.Control.Feedback>
+                    </Form.Group>
+                    <br/>
+
+                    <Form.Group controlId="taskForm.TaskGroup">
+                        <Form.Control type="text" placeholder="ID" onChange={handleId} required />
+                        <Form.Control.Feedback type="invalid">
+                            Please provide Task ID.
+                        </Form.Control.Feedback>
+                    </Form.Group>
+                    <br/>
+
+                    <Form.Group controlId="taskForm.DefinitionGroup">
+                        <Form.Control type="text" placeholder="Definition of Done" onChange={handleDod} required />
+                        <Form.Control.Feedback type="invalid">
+                            Please provide Definition of Done.
+                        </Form.Control.Feedback>
+                    </Form.Group>
+                    <br/>
+
+                    <Form.Group controlId="taskForm.DescriptionGroup">
+                        <Form.Label>Description</Form.Label>
+                        <Form.Control as="textarea" rows="3" onChange={handleDescription} />
+                    </Form.Group>
+                    <br/>
+
+                    <div className="calendar-container">
+                        <Form.Group controlId="taskForm.DateFromGroup">
+                            <Form.Label>From</Form.Label>
+                            <br/>
+                            <DatePicker
+                                selected={startDate}
+                                selectsStart
+                                startDate={startDate}
+                                endDate={endDate}
+                                onChange={handleChangeStart}
+                            />
                         </Form.Group>
-                        <br/>
 
-                        <Form.Group controlId="taskForm.TaskGroup">
-                            <Form.Control type="text" placeholder="ID" onChange={handleId} required />
-                            <Form.Control.Feedback type="invalid">
-                                Please provide Task ID.
-                            </Form.Control.Feedback>
+                        <Form.Group controlId="taskForm.DateToGroup">
+                            <Form.Label>To</Form.Label>
+                            <br/>
+                            <DatePicker
+                                selected={endDate}
+                                selectsEnd
+                                startDate={startDate}
+                                endDate={endDate}
+                                onChange={handleChangeEnd}
+                                minDate={startDate}
+                                required
+                            />
                         </Form.Group>
-                        <br/>
+                    </div>
+                    <br/>
 
-                        <Form.Group controlId="taskForm.DefinitionGroup">
-                            <Form.Control type="text" placeholder="Definition of Done" onChange={handleDod} required />
-                            <Form.Control.Feedback type="invalid">
-                                Please provide Definition of Done.
-                            </Form.Control.Feedback>
-                        </Form.Group>
-                        <br/>
-
-                        <Form.Group controlId="taskForm.DescriptionGroup">
-                            <Form.Label>Description</Form.Label>
-                            <Form.Control as="textarea" rows="3" onChange={handleDescription} />
-                        </Form.Group>
-                        <br/>
-
-                        <div className="calendar-container">
-                            <Form.Group controlId="taskForm.DateFromGroup">
-                                <Form.Label>From</Form.Label>
-                                <br/>
-                                <DatePicker
-                                    selected={startDate}
-                                    selectsStart
-                                    startDate={startDate}
-                                    endDate={endDate}
-                                    onChange={handleChangeStart}
-                                />
-                            </Form.Group>
-
-                            <Form.Group controlId="taskForm.DateToGroup">
-                                <Form.Label>To</Form.Label>
-                                <br/>
-                                <DatePicker
-                                    selected={endDate}
-                                    selectsEnd
-                                    startDate={startDate}
-                                    endDate={endDate}
-                                    onChange={handleChangeEnd}
-                                    minDate={startDate}
-                                    required
-                                />
-                            </Form.Group>
-                        </div>
-                        <br/>
-
+                    <Modal.Footer>
                         <Button variant="primary" type="submit">
-                            Save
+                            Save Task
                         </Button>
-                    </Form>
-                </Modal.Body>
-            </Modal>
-        </>
+
+                        <Button variant="secondary" onClick={toggleNewTaskModal}>
+                            Close Modal
+                        </Button>
+                    </Modal.Footer>
+
+                </Form>
+            </Modal.Body>
+        </Modal>
     );
 }
 

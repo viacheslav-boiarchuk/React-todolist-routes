@@ -5,7 +5,9 @@ import {
     modifyActiveCategory,
     toggleNewTaskModal,
     toggleRemoveModal,
-    removeCategory
+    removeCategory,
+    toggleErrorModal,
+    addTask
 } from './actions';
 
 export const headerConnector = connect(state => ({
@@ -20,11 +22,14 @@ export const sideBarConnector = connect(state => ({
 }), {
     addCategories: (payload) => addCategories(payload),
     toggleRemoveModal: (payload) => toggleRemoveModal(payload),
-    modifyActiveCategory: (payload) => modifyActiveCategory(payload),
+    modifyActiveCategory: (payload) => modifyActiveCategory(payload)
 });
 
-export const tasksConnector = connect(state => ({}), {
+export const tasksConnector = connect(state => ({
+    state: state
+}), {
     toggleNewTaskModal: (payload) => toggleNewTaskModal(payload),
+    toggleErrorModal: (payload) => toggleErrorModal(payload)
 });
 
 export const removeModalConnector = connect(state => ({
@@ -35,8 +40,16 @@ export const removeModalConnector = connect(state => ({
 });
 
 export const taskModalConnector = connect(state => ({
-    openedTaskModalModal: state.common.categoryList
-}));
+    openedTaskModal: state.common.openedTaskModal
+}), {
+    toggleNewTaskModal: (payload) => toggleNewTaskModal(payload),
+    addTask: (payload) => addTask(payload)
+});
 
+export const errorModalConnector = connect(state => ({
+    openedErrorModal: state.common.openedErrorModal
+}), {
+    toggleErrorModal: (payload) => toggleErrorModal(payload),
+});
 
 export const AppConnector = connect(state => state);

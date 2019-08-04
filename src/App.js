@@ -6,14 +6,17 @@ import {
     Main,
     TasksContainer,
     RemoveModal,
-    TaskModal } from './components/index';
+    TaskModal,
+    ErrorModal} from './components/index';
 import './App.css';
 import {
     headerConnector,
     sideBarConnector,
     tasksConnector,
     removeModalConnector,
-    taskModalConnector} from './connector';
+    taskModalConnector,
+    errorModalConnector
+} from './connector';
 import 'bootstrap/dist/css/bootstrap.css';
 
 const HeaderConnected = headerConnector(TodoHeader);
@@ -21,6 +24,7 @@ const SideBarConnected = sideBarConnector(TodoSidebar);
 const TasksConnected = tasksConnector(TasksContainer);
 const RemoveModalConnected = removeModalConnector(RemoveModal);
 const TaskModalConnected = taskModalConnector(TaskModal);
+const ErrorModalConnected = errorModalConnector(ErrorModal);
 
 /**
  * core App component
@@ -37,6 +41,7 @@ class App extends React.Component {
                 </Main>
                 <RemoveModalConnected/>
                 <TaskModalConnected/>
+                <ErrorModalConnected/>
                 <TodoFooter />
             </div>
         );

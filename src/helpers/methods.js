@@ -35,7 +35,7 @@ export function addDataToCategory(categoryData, id, arr) {
                     arr[i].activeCategory = !arr[i].activeCategory;
                     break;
                 case ('addTask'):
-                    arr[i].categoryTasksList.push(categoryData.taskName);
+                    arr[i].categoryTasksList.push(categoryData.data);
                     break;
                 case ('addCategory'):
                     let modifiedCategoryData = getCorrectKey(arr[i], categoryData);
@@ -54,29 +54,6 @@ export function addDataToCategory(categoryData, id, arr) {
         }
     }
     return arr;
-}
-
-
-/**
- * Function which return extended active Category will all subcategories
- *
- * @param {Object} data - categories list
- * @param {Object} tempObj - empty object where we will save out current active category data
- * @param {Function} cb - callback
- *
- * @returns {Object} return modified extended categoryData object
- */
-
-export function getActiveCategory(data, tempObj, cb) {
-    let copiedData = data.slice();
-    for (let i = 0; i < copiedData.length; i++) {
-        if (copiedData[i].activeCategory) {
-            cb(copiedData[i]);
-        }
-        if (copiedData[i].categoryList.length > 0) {
-            getActiveCategory(copiedData[i].categoryList, tempObj, cb);
-        }
-    }
 }
 
 /**
@@ -136,27 +113,40 @@ export function addCategory(payload, storeCategory) {
 }
 
 /**
- * function which add new task in proper category
+ * function which return flag depending on active category
  *
- * @param {String} payload - category id
- * @param {Array} storeCategory - categories list from Store
+ * @param {Array} categoryData - categories list from Store
+ * @param {Boolean} fullObj - depending on this flag - return correct data
+ * @returns {Object} return object with data from category or just empty
  */
 
-export function addTask(payload, storeCategory) {
-    let activeLi = document.querySelector('.active-li');
-    if (!activeLi) {
-        alert('Please choose category');
-        return storeCategory;
-    }
-    else {
-        let currentCategoryId = activeLi.closest('.category-item').getAttribute('data-unique-key'),
-            taskName = prompt('Please add task', "Need to wake up on 9 o'clock");
-        if (taskName != null) {
-            let categoryData = {
-                    type: 'addTask',
-                    taskName
-            };
-            return addDataToCategory(categoryData, currentCategoryId, storeCategory);
+export function checkActiveCategory(categoryData, fullObj = false) {
+    let resultObj = {};
+    function privateActiveFunc(categoryData, fullObj) {
+        for (let i = 0; i < categoryData.length; i++) {
+            if (categoryData[i].categoryList.length > 0) {
+                privateActiveFunc(categoryData[i].categoryList, fullObj);
+            }
+            if (categoryData[i].activeCategory) {
+                resultObj = fullObj ? categoryData[i] : categoryData[i].uniqueId;
+                return;
+            }
         }
+        return resultObj;
     }
+    privateActiveFunc(categoryData, fullObj);
+    return resultObj
+}
+
+/**
+ * function which check task duration. If task duration expired (need to match with current day - return corresponding answer)
+ *
+ * @param {String} endDate - task end day
+ * @returns {Boolean} return boolean - expired data or not
+ */
+
+export function checkTaskDuration(endDate) {
+    var d1 = new Date();
+    var d2 = new Date(endDate);
+    return d1 < d2;
 }

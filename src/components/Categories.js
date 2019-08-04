@@ -19,21 +19,21 @@ class Categories extends React.Component {
     render() {
         let {categoryList, addNewCategory, toggleRemoveModal} = this.props,
             {props} = this,
-            RenderChildren = renderChildrenHOC(Categories, "subcategory-container");
+            RenderChildren = renderChildrenHOC(Categories, 'subcategory-container');
 
         return (
             <ul>
                 {categoryList.map((item, index) => {
                     return (
-                        <li key={item.name + index + '-' + item.uniqueId} className={"category-item " + (item.activeCategory ? 'active-li' : '')} data-unique-key={item.uniqueId}>
-                            <div>
-                                <button onClick={(e)=> toggleRemoveModal(item.uniqueId)} className="remove-category">-</button>
+                        <li key={item.name + index + '-' + item.uniqueId} className={'category-item ' + (item.activeCategory ? 'active-li' : '')} data-unique-key={item.uniqueId}>
+                            <div className='category-container'>
+                                <button onClick={(e)=> toggleRemoveModal(item.uniqueId)} className='remove-category'>-</button>
 
-                                <div className="category-text-row" onClick={this.toggleActiveLi(item.uniqueId)}>
+                                <div className='category-text-row' onClick={this.toggleActiveLi(item.uniqueId)}>
                                     <span>{item.uniqKey}</span> &nbsp;
                                     {item.name}
                                 </div>
-                                <button onClick={(e)=> addNewCategory(item.uniqueId)} className="add-subcategories">+</button>
+                                <button onClick={(e)=> addNewCategory(item.uniqueId)} className='add-subcategories'>+</button>
                             </div>
                             <RenderChildren item={item} defaultProps={props} />
                         </li>

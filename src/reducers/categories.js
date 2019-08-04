@@ -1,5 +1,5 @@
 import * as ct from '../actions/constants';
-import {addCategory, addDataToCategory, addTask} from '../helpers/methods';
+import {addCategory, addDataToCategory, checkActiveCategory} from '../helpers/methods';
 
 const initialState = {
     categoryList: [],
@@ -8,11 +8,8 @@ const initialState = {
 
 export const categories = (state = initialState, action) => {
     const { type, payload } = action;
-
     switch (type) {
         case ct.ADD_CATEGORIES:
-            console.log(payload);
-
             let updatedDataWithAddedItem = addCategory(payload, [...state.categoryList]),
                 resultArray = updatedDataWithAddedItem ? updatedDataWithAddedItem : [...state.categoryList];
 
@@ -30,8 +27,8 @@ export const categories = (state = initialState, action) => {
             };
 
         case ct.REMOVE_CATEGORY:
-            let categoryId = state.removeCategoryID;
-            let updatedDataWithRemovedItem = addDataToCategory({type: 'removeCategory'}, categoryId, [...state.categoryList]);
+            let categoryId = state.removeCategoryID,
+                updatedDataWithRemovedItem = addDataToCategory({type: 'removeCategory'}, categoryId, [...state.categoryList]);
 
             return {
                 ...state,
@@ -39,17 +36,20 @@ export const categories = (state = initialState, action) => {
                 removeCategoryID: ''
             };
 
+        case ct.ADD_TASK:
+            let activeCategory = checkActiveCategory([...state.categoryList]),
+                updateDataWithNewTask = addDataToCategory({type: 'addTask', data: payload}, activeCategory, [...state.categoryList]);
+
+            return {
+                ...state,
+                categoryList: updateDataWithNewTask
+            };
+
         case ct.TOGGLE_REMOVE_MODAL:
             let removeIdExist = state.removeCategoryID ? '': payload;
 
             return { ...state,
                 removeCategoryID: removeIdExist
-            };
-
-        case ct.TOGGLE_ADD_TASK_MODAL:
-            //let updatedDataWithAddedTask = addTask(payload, [...state.categoryList]);
-            return {
-                ...state
             };
 
         default:

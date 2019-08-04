@@ -1,62 +1,28 @@
 import React from 'react';
-import renderChildrenHOC from "../hoc/renderChild";
-import Tasks from "./Tasks";
-import {getActiveCategory} from '../helpers/methods';
+import Task from "./Task";
 import _ from 'lodash';
 
 /**
  * TasksList component
  */
 
-class TasksList extends React.Component {
+export default function TasksList(props) {
 
-    /**
-     * constructor
-     */
-    constructor(...args) {
-        super(...args);
+    let {categoryTasksList} = props.categoryData;
 
-        this.state = {
-            activeCategories: {}
-        };
-    }
+    return (
+        <>
+            {!(_.isEmpty(categoryTasksList)) ?
+                <ul>
+                    {categoryTasksList.map((item, index) => {
+                        return (
+                            <Task task={item} key={index+'__'+item.name} />
+                        )
+                    })}
+                </ul>
+                : null
+            }
+        </>
 
-    componentWillReceiveProps() {
-        let {categories} = this.props.categoryData;
-        getActiveCategory(categories, {}, this.renderTasks);
-    }
-
-    renderTasks = (data) => {
-        this.setState({
-            activeCategories: data
-        })
-    };
-
-    render() {
-        let {props} = this,
-            {activeCategories} = this.state,
-            RenderChildren = renderChildrenHOC(TasksList, "todolist-inner-container");
-        return (
-            <ul>
-                {!(_.isEmpty(activeCategories) || !activeCategories.activeCategory) ?
-                    <>
-                        <Tasks tasksList={activeCategories} />
-                        {activeCategories.categories.map((item, index) => {
-                            return (
-                                <li key={item.name + index + '-' + item.uniqueId} >
-                                    <ul>
-                                        <Tasks tasksList={item} />
-                                    </ul>
-                                    <RenderChildren item={item} type={'categories'} tempProps={props} />
-                                </li>
-                            )
-                        })}
-                    </>
-                    : null
-                }
-            </ul>
-        );
-    }
+    )
 }
-
-export default TasksList;
