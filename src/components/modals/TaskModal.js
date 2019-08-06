@@ -1,12 +1,13 @@
 import {Button, Modal, Form} from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {createUniqueId} from "../../helpers/methods";
 
 function TaskModal(props) {
 
-    let {addTask, openedTaskModal, toggleNewTaskModal} = props;
+    let {addTask, openedTaskModal, toggleNewTaskModal} = props,
+        formRef = useRef();
     const [validated, setValidated] = useState(false),
         [name, setName] = useState(false),
         [id, setId] = useState(false),
@@ -19,6 +20,7 @@ function TaskModal(props) {
         const form = event.currentTarget;
         event.preventDefault();
         event.stopPropagation();
+        setValidated(true);
         if (form.checkValidity() !== false) {
             addTask({
                 name,
@@ -30,8 +32,8 @@ function TaskModal(props) {
                 taskUniqueID: name + createUniqueId()
             });
             props.toggleNewTaskModal();
+            setValidated(false);
         }
-        setValidated(true);
     };
 
     const handleChangeStart = value => {
@@ -59,9 +61,9 @@ function TaskModal(props) {
     };
 
     return (
-        <Modal show={openedTaskModal} className={"add-new-task-modal"}>
+        <Modal ref={formRef} show={openedTaskModal} className={"add-new-task-modal"}>
             <Modal.Body>
-                <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                <Form  noValidate validated={validated} onSubmit={handleSubmit}>
                     <Form.Group controlId="taskForm.TaskName">
                         <Form.Control type="text" placeholder="Name" onChange={handleName} required />
                         <Form.Control.Feedback type="invalid">

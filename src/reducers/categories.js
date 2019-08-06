@@ -60,10 +60,10 @@ export const categories = (state = initialState, action) => {
 
         case ct.CHANGE_TASK_DATE:
             let updatedDataWithNewTaskDate = updateTaskDate(payload, [...state.categoryList]);
-            console.log(updatedDataWithNewTaskDate);
 
             return {
-                ...state
+                ...state,
+                categoryList: updatedDataWithNewTaskDate
             };
 
         default:

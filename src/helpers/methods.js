@@ -162,7 +162,7 @@ export function checkTaskDuration(endDate) {
 export function updateTaskDate(categoryData, arr) {
     for (let i = 0; i < arr.length; i++) {
         if (arr[i].categoryList.length > 0) {
-            updateTaskDate(categoryData, arr[i]);
+            updateTaskDate(categoryData, arr[i].categoryList);
         }
         for (let j = 0; j < arr[i].categoryTasksList.length; j++) {
             let currItem = arr[i].categoryTasksList[j];
