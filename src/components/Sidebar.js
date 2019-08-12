@@ -8,8 +8,8 @@ import Categories from './Categories';
  */
 
 export default function TodoSidebar(props) {
-    let visibility = props.common.isSidebarVisible ? '' :  'hidden',
-        {categoryList} = props;
+    let visibility = props.isSidebarVisible ? '' :  'hidden',
+        {categoryListState} = props;
 
     return (
         <aside className={visibility}>
@@ -17,7 +17,7 @@ export default function TodoSidebar(props) {
 
             <div className="categories-container">
                 <Categories
-                    categoryList={categoryList}
+                    categoryList={categoryListState}
                     addNewCategory={props.addCategories}
                     removeCategory={props.removeCategory}
                     modifyActiveCategory = {props.modifyActiveCategory}

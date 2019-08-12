@@ -11,12 +11,11 @@ import {checkActiveCategory} from '../helpers/methods';
 
 export default function TasksContainer(props) {
 
-    let {categoryList} = props.state.categories,
-        {toggleDateModal} = props,
+    let {toggleDateModal, categoryList} = props,
         activeCategoryData  = checkActiveCategory([...categoryList], true);
 
     const callCategoryHelper = () => {
-        let {categoryList} = props.state.categories;
+        let {categoryList} = props;
         let activeCategory = checkActiveCategory([...categoryList]);
 
         if (_.isEmpty(activeCategory)) {

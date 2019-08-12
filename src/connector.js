@@ -1,4 +1,20 @@
 import { connect } from 'react-redux';
+import { createSelector } from 'reselect';
+
+import {
+    openedErrorModal,
+    openedTaskModal,
+    openedRemoveModal,
+    openedDateModal,
+    activeTaskID,
+    isOpened,
+    isSidebarVisible
+} from './selectors/common';
+
+import {
+    categoryListState
+} from './selectors/categories.js';
+
 import {
     toggleSidebar,
     addCategories,
@@ -12,54 +28,104 @@ import {
     addTask
 } from './actions';
 
-export const headerConnector = connect(state => ({
-    isOpened: state.common.isSidebarVisible
-}), {
+
+const isOpenedSelector = createSelector(
+    [isOpened],
+    (isOpened) => {
+        return ({
+            isOpened
+        });
+    }
+);
+
+export const headerConnector = connect(isOpenedSelector, {
     toggleSidebar: () => toggleSidebar()
 });
 
-export const sideBarConnector = connect(state => ({
-    common: state.common,
-    categoryList: state.categories.categoryList
-}), {
+
+const sidebarSelector = createSelector(
+    [isSidebarVisible, categoryListState],
+    (isSidebarVisible, categoryListState) => {
+        return ({
+            isSidebarVisible, categoryListState
+        });
+    }
+);
+
+export const sideBarConnector = connect(sidebarSelector, {
     addCategories: (payload) => addCategories(payload),
     toggleRemoveModal: (payload) => toggleRemoveModal(payload),
     modifyActiveCategory: (payload) => modifyActiveCategory(payload)
 });
 
-export const tasksConnector = connect(state => ({
-    state: state
-}), {
+const categoriesSelector = createSelector(
+    [categoryListState],
+    (categoryListState) => {
+        return ({
+            categoryList: categoryListState
+        });
+    }
+);
+
+export const tasksConnector = connect(categoriesSelector, {
     toggleNewTaskModal: (payload) => toggleNewTaskModal(payload),
     toggleErrorModal: (payload) => toggleErrorModal(payload),
     toggleDateModal: (payload) => toggleDateModal(payload),
 });
 
-export const removeModalConnector = connect(state => ({
-    openedRemoveModal: state.common.openedRemoveModal
-}), {
+const removeFlagSelector = createSelector(
+    [openedRemoveModal],
+    (openedRemoveModal) => {
+        return ({
+            openedRemoveModal
+        });
+    }
+);
+
+export const removeModalConnector = connect(removeFlagSelector, {
     removeCategory: (payload) => removeCategory(payload),
     toggleRemoveModal: (payload) => toggleRemoveModal(payload),
 });
 
-export const dateModalConnector = connect(state => ({
-    openedDateModal: state.common.openedDateModal,
-    activeTaskID: state.common.activeTaskID
-}), {
+const dateModalSelector = createSelector(
+    [openedDateModal, activeTaskID],
+    (openedDateModal, activeTaskID) => {
+        return ({
+            openedDateModal,
+            activeTaskID
+        });
+    }
+);
+
+export const dateModalConnector = connect(dateModalSelector, {
     toggleDateModal: (payload) => toggleDateModal(payload),
     changeTaskDate: (payload) => changeTaskDate(payload),
 });
 
-export const taskModalConnector = connect(state => ({
-    openedTaskModal: state.common.openedTaskModal
-}), {
+const openedFlagSelector = createSelector(
+    [openedTaskModal],
+    (openedTaskModal) => {
+        return ({
+            openedTaskModal
+        });
+    }
+);
+
+export const taskModalConnector = connect(openedFlagSelector, {
     toggleNewTaskModal: (payload) => toggleNewTaskModal(payload),
     addTask: (payload) => addTask(payload)
 });
 
-export const errorModalConnector = connect(state => ({
-    openedErrorModal: state.common.openedErrorModal
-}), {
+const errorFlagSelector = createSelector(
+    [openedErrorModal],
+    (openedErrorModal) => {
+        return ({
+            openedErrorModal
+        });
+    }
+);
+
+export const errorModalConnector = connect(errorFlagSelector, {
     toggleErrorModal: (payload) => toggleErrorModal(payload),
 });
 
