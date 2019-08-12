@@ -8,36 +8,39 @@ export const rootCommonState = createSelector(
 export const openedErrorModal = createSelector(
     rootCommonState,
     common => {
-        return common.openedErrorModal
+        return common.get('openedErrorModal')
     }
 );
 
 export const openedTaskModal = createSelector(
     rootCommonState,
-    common => common.openedTaskModal
+    common => common.get('openedTaskModal')
 );
 
 export const openedRemoveModal = createSelector(
     rootCommonState,
-    common => common.openedRemoveModal
+    common => common.get('openedRemoveModal')
 );
 
 export const openedDateModal = createSelector(
     rootCommonState,
-    common => common.openedDateModal
+    common => common.get('openedDateModal')
 );
 
 export const activeTaskID = createSelector(
     rootCommonState,
-    common => common.activeTaskID
+    common => common.get('activeTaskID')
 );
 
 export const isOpened = createSelector(
     rootCommonState,
-    common => common.isOpened
+    common => common.get('isOpened')
 );
 
 export const isSidebarVisible = createSelector(
     rootCommonState,
-    common => common.isSidebarVisible
+    common => {
+        console.log(common);
+        return common.get('isSidebarVisible');
+    }
 );

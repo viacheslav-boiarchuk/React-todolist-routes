@@ -7,5 +7,5 @@ export const rootCategoriesState = createSelector(
 
 export const categoryListState = createSelector(
     rootCategoriesState,
-    categories => categories.categoryList
+    categories => categories.get('categoryList')
 );
