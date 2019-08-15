@@ -40,7 +40,6 @@ export const isOpened = createSelector(
 export const isSidebarVisible = createSelector(
     rootCommonState,
     common => {
-        console.log(common);
         return common.get('isSidebarVisible');
     }
 );

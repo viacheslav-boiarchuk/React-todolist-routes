@@ -39,7 +39,7 @@ export const common = (state = initialState, action) => {
                 .set('openedRemoveModal', false);
 
         case TOGGLE_ERROR_MODAL:
-            let openedErrorVal = state.get('openedErrorVal');
+            let openedErrorVal = state.get('openedErrorModal');
 
             return state
                 .set('openedErrorModal', !openedErrorVal);
@@ -48,7 +48,7 @@ export const common = (state = initialState, action) => {
             let openedTaskVal = state.get('openedTaskModal');
 
             return state
-                .set('openedTaskModal', openedTaskVal);
+                .set('openedTaskModal', !openedTaskVal);
 
         case TOGGLE_DATE_MODAL:
             let taskIDVal = state.get('activeTaskID'),
